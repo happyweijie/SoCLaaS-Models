@@ -4,12 +4,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: "http://localhost:5173"
+  origin: [
+    "http://localhost:5173"
+  ]
 }));
 
-app.get("api/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.status(200)
     .json({ status: "ok" });
 })
@@ -41,6 +44,6 @@ app.get("/api/models", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Backend running on http://localhost:3000");
+app.listen(PORT, () => {
+  console.log(`Backend running on port ${PORT}`);
 });
