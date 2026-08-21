@@ -4,10 +4,18 @@ interface ModelRowProps {
   model: Model;
 }
 
+// Sub-cent prices are common, so allow a third decimal place before rounding
+const priceFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 3,
+  maximumFractionDigits: 3,
+});
+
 const ModelRow = ({ model }: ModelRowProps) => {
 
-  const microdollarsToDollars = (amt: number): number => {
-    return amt / Math.pow(10, 6);
+  const formatPrice = (microdollars: number): string => {
+    return priceFormatter.format(microdollars / Math.pow(10, 6));
   };
 
   const formatModelAlias = (model: Model): string => {
@@ -34,11 +42,11 @@ const ModelRow = ({ model }: ModelRowProps) => {
   return (
     <tr>
       <td>{model.id}</td>
-      <td>{formatModelAlias(model)}</td>
       <td>{model.soclaas.capabilities.join(", ")}</td>
-      <td>{formatContextWindow(getModelContextWindow(model))}</td>
-      <td>${microdollarsToDollars(model.soclaas.input_microdollars_per_million_tokens)}</td>
-      <td>${microdollarsToDollars(model.soclaas.output_microdollars_per_million_tokens)}</td>
+      <td className="num">{formatContextWindow(getModelContextWindow(model))}</td>
+      <td className="num">{formatPrice(model.soclaas.input_microdollars_per_million_tokens)}</td>
+      <td className="num">{formatPrice(model.soclaas.output_microdollars_per_million_tokens)}</td>
+      <td>{formatModelAlias(model)}</td>
     </tr>
   );
 };
@@ -58,12 +66,12 @@ const ModelTable = ({ models, showAliases }: ModelsTableProps) => {
       <table>
         <thead>
           <tr>
-            <td>Model</td>
-            <td>Alias of</td>
-            <td>Capabilities</td>
-            <td>Context</td>
-            <td>Input / 1M</td>
-            <td>Output / 1M</td>
+            <th>Model</th>
+            <th>Capabilities</th>
+            <th className="num">Context</th>
+            <th className="num">Input / 1M</th>
+            <th className="num">Output / 1M</th>
+            <th>Alias of</th>
           </tr>
         </thead>
         

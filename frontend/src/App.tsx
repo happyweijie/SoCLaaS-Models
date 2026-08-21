@@ -20,14 +20,16 @@ function App() {
       </p>
       
       {/* Lightweight component to toggle showing hidden models */}
-      <label>
-        <input
-          type="checkbox"
-          checked={showAliases}
-          onChange={(event) => setShowAliases(event.target.checked)}
-        />
-        Show aliases
-      </label>
+      <div className="controls">
+        <label>
+          <input
+            type="checkbox"
+            checked={showAliases}
+            onChange={(event) => setShowAliases(event.target.checked)}
+          />
+          Show aliases
+        </label>
+      </div>
 
       <ModelTable models={models} showAliases={showAliases}/>
     </>
