@@ -4,7 +4,7 @@ import ModelTable from './components/ModelsTable';
 
 function App() {
   const [models, setModels] = useState<Model[]>([]);
-  // hide those models with aliases by default
+  // hide those models that are aliases of other models by default
   const [showAliases, setShowAliases] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ function App() {
     <>
       <h1>SoCLaaS Models</h1>
       <p>
-        SoCLaaS provides {models.length} available models (only the non-aliased ones are shown by default).
+        SoCLaaS provides {models.length} available models. Models that are aliases of another model are hidden by default.
       </p>
       
       {/* Lightweight component to toggle showing hidden models */}
@@ -27,7 +27,7 @@ function App() {
             checked={showAliases}
             onChange={(event) => setShowAliases(event.target.checked)}
           />
-          Show aliases
+          Show alias models
         </label>
       </div>
 
