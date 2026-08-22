@@ -3,13 +3,14 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "workspaces": [
-    "frontend",
-    "backend"
-  ],
   "scripts": {
-    "build": "npm run build --workspace frontend",
-    "dev:api": "npm run dev --workspace backend",
-    "dev:web": "npm run dev --workspace frontend"
+    "build": "cd frontend && npm ci && npm run build",
+    "dev:api": "node --watch backend/index.js",
+    "dev:web": "cd frontend && npm run dev"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
   }
 }

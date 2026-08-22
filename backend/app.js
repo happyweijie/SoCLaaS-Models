@@ -1,8 +1,16 @@
 import express from "express";
 import cors from "cors";
 import dotenv from 'dotenv';
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-dotenv.config();
+// Resolve .env next to this file rather than from the working directory, so
+// the server behaves the same whether it is started from the repo root or
+// from backend/. On Vercel there is no .env and this is a no-op.
+dotenv.config({
+  path: path.join(path.dirname(fileURLToPath(import.meta.url)), ".env")
+});
+
 const app = express();
 
 app.use(cors({
