@@ -1,0 +1,16 @@
+{
+  "name": "soclaas-models-list",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "cd frontend && npm ci && npm run build",
+    "dev:api": "node --watch backend/index.js",
+    "dev:web": "cd frontend && npm run dev"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}

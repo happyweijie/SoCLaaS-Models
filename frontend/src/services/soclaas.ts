@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const BASE = import.meta.env.VITE_API_BASE ?? "http://localhost:3000";
+// Empty default keeps requests same-origin: the Vite dev proxy handles it
+// locally, and on Vercel the API is served from the same deployment.
+const BASE = import.meta.env.VITE_API_BASE ?? "";
 
 export interface Model {
   id: string;
