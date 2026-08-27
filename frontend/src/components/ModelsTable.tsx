@@ -14,6 +14,10 @@ const priceFormatter = new Intl.NumberFormat("en-US", {
 
 const ModelRow = ({ model }: ModelRowProps) => {
 
+  const formatDescription = (description: string): string => {
+    return description ? description : "-"
+  };
+
   const formatPrice = (microdollars: number): string => {
     return priceFormatter.format(microdollars / Math.pow(10, 6));
   };
@@ -42,6 +46,7 @@ const ModelRow = ({ model }: ModelRowProps) => {
   return (
     <tr>
       <td>{model.id}</td>
+      <td>{formatDescription(model.soclaas.description)}</td>
       <td>{model.soclaas.capabilities.join(", ")}</td>
       <td className="num">{formatContextWindow(getModelContextWindow(model))}</td>
       <td className="num">{formatPrice(model.soclaas.input_microdollars_per_million_tokens)}</td>
@@ -66,12 +71,13 @@ const ModelTable = ({ models, showAliases }: ModelsTableProps) => {
       <table>
         <thead>
           <tr>
-            <th>Model</th>
-            <th>Capabilities</th>
-            <th className="num">Context</th>
-            <th className="num">Input / 1M</th>
-            <th className="num">Output / 1M</th>
-            <th>Alias of</th>
+            <th className="col-model">Model</th>
+            <th className="col-desc">Description</th>
+            <th className="col-capabilities">Capabilities</th>
+            <th className="col-context num">Context</th>
+            <th className="col-in num">Input / 1M</th>
+            <th className="col-out num">Output / 1M</th>
+            <th className="col-alias">Alias of</th>
           </tr>
         </thead>
         
