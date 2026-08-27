@@ -13,18 +13,16 @@ dotenv.config({
 
 const app = express();
 
-app.use(cors({
-  origin: [
-    "http://localhost:5173"
-  ]
-}));
+// The API is read-only and returns no secrets, so any origin may read it —
+// this is what lets other people's browser apps use the catalogue directly.
+app.use(cors());
 
-app.get("/api/health", (req, res) => {
+app.get("/api/health", (_req, res) => {
   res.status(200)
     .json({ status: "ok" });
 })
 
-app.get("/api/models", async (req, res) => {
+app.get("/api/models", async (_req, res) => {
   try {
     const response = await fetch(
       "https://soclaas-api.comp.nus.edu.sg/v1/models",
@@ -43,6 +41,11 @@ app.get("/api/models", async (req, res) => {
     }
 
     const data = await response.json();
+
+    // The catalogue changes rarely, so let Vercel's CDN serve repeat traffic
+    // instead of hitting the upstream API once per visitor. Only the success
+    // path sets this: a transient upstream failure must not get pinned here
+    res.set("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
 
     res.json(data);
   } catch (error) {
