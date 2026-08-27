@@ -5,6 +5,11 @@
   --text: #1f2328;
   --muted: #656d76;
 
+  /* Skeleton placeholders need their own pair: --header-bg and --row-hover are
+     within ~2% luminance of each other, too close for a shimmer to read */
+  --skeleton-base: #e6e9ee;
+  --skeleton-highlight: #f2f4f7;
+
   font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     Helvetica, Arial, sans-serif;
 
@@ -90,4 +95,72 @@ tbody tr:hover {
 .num {
   text-align: right;
   font-variant-numeric: tabular-nums;
+}
+
+/* Placeholder blocks shown in the table body while the models request is in
+   flight. The columns are already pinned by table-layout: fixed, so these
+   occupy the final geometry and the real rows swap in without moving */
+@keyframes skeleton-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+.skeleton {
+  display: block;
+  height: 0.85em;
+  border-radius: 3px;
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base) 25%,
+    var(--skeleton-highlight) 50%,
+    var(--skeleton-base) 75%
+  );
+  /* Twice the element width, so there is off-screen gradient to slide in */
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+/* A static block still reads as "pending", so drop only the movement */
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+
+/* Announced by screen readers, absent for sighted users: the skeleton blocks
+   and the row count convey nothing on their own */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.error {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.error p {
+  margin-bottom: 1rem;
+}
+
+.error button {
+  font: inherit;
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--header-bg);
+  cursor: pointer;
+}
+
+.error button:hover {
+  background: var(--row-hover);
 }

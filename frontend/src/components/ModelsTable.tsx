@@ -56,19 +56,44 @@ const ModelRow = ({ model }: ModelRowProps) => {
   );
 };
 
+// Kept next to the header row below so the two stay in step if a column is added
+const COLUMN_COUNT = 7;
+
+// Close to the number of non-alias models, so the page barely resizes on load
+const SKELETON_ROW_COUNT = 8;
+
+// Placeholder rows for the in-flight state. They sit inside the real table, so
+// the columns keep the widths table-layout: fixed has already assigned them
+const SkeletonRows = () => (
+  <>
+    {Array.from({ length: SKELETON_ROW_COUNT }, (_, row) => (
+      <tr key={row}>
+        {Array.from({ length: COLUMN_COUNT }, (_, column) => (
+          <td key={column}><span className="skeleton" /></td>
+        ))}
+      </tr>
+    ))}
+  </>
+);
+
 interface ModelsTableProps {
   models: Model[];
   showAliases: boolean;
+  isLoading: boolean;
 }
 
-const ModelTable = ({ models, showAliases }: ModelsTableProps) => {
+const ModelTable = ({ models, showAliases, isLoading }: ModelsTableProps) => {
   // Hide models which are aliases of other models if needed
   const modelsToShow = models
     .filter(model => showAliases || !model.soclaas.alias_of)
 
   return (
     <>
-      <table>
+      <span className="visually-hidden" role="status">
+        {isLoading ? "Loading models" : `${modelsToShow.length} models loaded`}
+      </span>
+
+      <table aria-busy={isLoading}>
         <thead>
           <tr>
             <th className="col-model">Model</th>
@@ -82,10 +107,12 @@ const ModelTable = ({ models, showAliases }: ModelsTableProps) => {
         </thead>
         
         <tbody>
-          {modelsToShow.map(model => (
-              <ModelRow key={model.id} model={model} />
-            )
-          )}
+          {isLoading
+            ? <SkeletonRows />
+            : modelsToShow.map(model => (
+                <ModelRow key={model.id} model={model} />
+              )
+            )}
         </tbody>
       </table>
     </>
