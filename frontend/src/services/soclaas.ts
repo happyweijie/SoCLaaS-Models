@@ -12,6 +12,7 @@ export interface Model {
   max_model_len: number;
   soclaas: {
     capabilities: string[];
+    description: string;
     input_microdollars_per_million_tokens: number;
     output_microdollars_per_million_tokens: number;
     audio_microdollars_per_minute: number;

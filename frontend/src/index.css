@@ -70,13 +70,17 @@ thead th {
   font-weight: 600;
 }
 
-/* Positional, so these must be updated if the columns are ever reordered */
-thead th:nth-child(1) { width: 26%; }  /* Model */
-thead th:nth-child(2) { width: 22%; }  /* Capabilities */
-thead th:nth-child(3) { width: 9%; }   /* Context */
-thead th:nth-child(4) { width: 9.5%; } /* Input / 1M */
-thead th:nth-child(5) { width: 9.5%; } /* Output / 1M */
-thead th:nth-child(6) { width: 24%; }  /* Alias of */
+/* Widths live on the header cells so columns can be added or reordered
+  without touching this block. They should always add up to 100%: with
+  table-layout: fixed, any unmatched column gets whatever is left over. 
+*/
+.col-model   { width: 20%; }
+.col-desc    { width: 24%; }
+.col-capabilities    { width: 14%; }
+.col-context { width:  8%; }
+.col-in      { width: 10%; }
+.col-out     { width: 10%; }
+.col-alias   { width: 14%; }
 
 tbody tr:hover {
   background: var(--row-hover);
